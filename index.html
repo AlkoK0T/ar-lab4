@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>AR-этикетка оборудования — ЛР №4</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-master.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.4.8/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    .arjs-loader {
+      height: 100%; width: 100%; position: absolute; top: 0; left: 0;
+      background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: flex;
+      justify-content: center; align-items: center; color: white; font-size: 1.1em;
+      text-align: center; padding: 20px; box-sizing: border-box;
+    }
+    #hint {
+      position: fixed; bottom: 16px; left: 0; right: 0; text-align: center;
+      color: #fff; text-shadow: 0 1px 3px #000; font-size: 15px; z-index: 50;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body style="margin: 0; overflow: hidden;">
+  <div class="arjs-loader">
+    <div>Загрузка AR... Разрешите доступ к камере.<br>Наведите камеру на маркер Hiro.</div>
+  </div>
+  <div id="hint">ЛР №4 — AR-этикетка лабораторного оборудования (вариант: маркер Hiro)</div>
+
+  <a-scene
+    vr-mode-ui="enabled: false"
+    embedded
+    loading-screen="enabled: false"
+    renderer="logarithmicDepthBuffer: true;"
+    arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+  >
+    <a-marker preset="hiro" id="marker" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+
+      <!-- информационная карточка -->
+      <a-plane
+        position="0 0.6 0"
+        rotation="-90 0 0"
+        width="1.6" height="1"
+        color="#102a43"
+        opacity="0.92"
+      ></a-plane>
+
+      <a-text
+        value="Фрезерный станок ФС-12\nСТАНКИН, лаб. 204"
+        position="-0.75 0.05 0.75"
+        rotation="-90 0 0"
+        width="2.2"
+        color="#ffffff"
+        align="left"
+      ></a-text>
+
+      <a-text
+        value="Напряжение: 380 В\nМакс. об/мин: 2800\nТехобслуживание: раз в 6 мес.\nОтветственный: лаборант каф. ИС"
+        position="-0.75 0.05 0.35"
+        rotation="-90 0 0"
+        width="1.7"
+        color="#9fc5e8"
+        align="left"
+      ></a-text>
+
+      <a-text
+        value="⚠ Перед работой — инструктаж по ТБ"
+        position="-0.75 0.05 -0.15"
+        rotation="-90 0 0"
+        width="1.7"
+        color="#ffd166"
+        align="left"
+      ></a-text>
+
+      <!-- простая 3D-подсказка: вращающийся индикатор состояния -->
+      <a-cylinder
+        position="0.9 0.25 0"
+        radius="0.08" height="0.5"
+        color="#2ecc71"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"
+      ></a-cylinder>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+</body>
+</html>
