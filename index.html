@@ -85,5 +85,36 @@
 
     <a-entity camera></a-entity>
   </a-scene>
+
+  <script>
+    // Оверлей «Загрузка AR...» сам не исчезает — убираем его вручную,
+    // как только камера запустилась (или по таймеру на случай, если событие не придёт).
+    var loader = document.querySelector('.arjs-loader');
+    var hint = document.getElementById('hint');
+    var HINT_IDLE = 'Наведите камеру на маркер Hiro';
+    var HINT_FOUND = 'Маркер найден ✔';
+
+    function hideLoader() {
+      if (loader) { loader.style.display = 'none'; }
+      if (hint && !markerVisible) { hint.textContent = HINT_IDLE; }
+    }
+
+    var markerVisible = false;
+    window.addEventListener('arjs-video-loaded', hideLoader);
+    window.addEventListener('load', function () { setTimeout(hideLoader, 4000); });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var marker = document.getElementById('marker');
+      marker.addEventListener('markerFound', function () {
+        markerVisible = true;
+        hideLoader();
+        if (hint) { hint.textContent = HINT_FOUND; }
+      });
+      marker.addEventListener('markerLost', function () {
+        markerVisible = false;
+        if (hint) { hint.textContent = HINT_IDLE; }
+      });
+    });
+  </script>
 </body>
 </html>
